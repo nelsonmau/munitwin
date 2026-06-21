@@ -1,0 +1,14 @@
+# Local server logs
+/tmp/
+
+# Playwright artifacts
+.playwright-mcp/
+*.png
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

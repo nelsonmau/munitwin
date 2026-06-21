@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-base:     #0d0f12;
+  --bg-surface:  #1a1d23;
+  --bg-subtle:   #f4f5f7;
+  --accent:      #2563eb;
+  --accent-hover:#1d4ed8;
+  --border-dark: #2a2d35;
+  --critical:    #e4002b;
+  --warning:     #f59e0b;
+  --ok:          #10b981;
+  --text-sec:    #9ca3af;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: 'Inter', sans-serif; background: var(--bg-base); color: #fff; }
+
+/* ── Hero grid background ─────────────────────────────────── */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(37,99,235,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Leaflet overrides ────────────────────────────────────── */
+.leaflet-container { background: #0d0f12; }
+.leaflet-control-zoom a {
+  background: var(--bg-surface) !important;
+  color: #fff !important;
+  border-color: var(--border-dark) !important;
+}
+.leaflet-control-zoom a:hover { background: var(--accent) !important; }
+.leaflet-control-attribution {
+  background: rgba(13,15,18,0.8) !important;
+  color: var(--text-sec) !important;
+  font-size: 10px;
+}
+.leaflet-control-attribution a { color: var(--text-sec) !important; }
+.leaflet-popup-content-wrapper {
+  background: var(--bg-surface);
+  color: #fff;
+  border: 1px solid var(--border-dark);
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.leaflet-popup-tip { background: var(--bg-surface); }
+.leaflet-popup-content { margin: 12px 16px; font-size: 13px; }
+
+/* ── Sidebar scrollbar ────────────────────────────────────── */
+.sidebar-scroll { overflow-y: auto; }
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 2px; }
+
+/* ── Chatbot messages ─────────────────────────────────────── */
+#chat-messages { overflow-y: auto; max-height: 260px; }
+#chat-messages::-webkit-scrollbar { width: 3px; }
+#chat-messages::-webkit-scrollbar-thumb { background: var(--border-dark); }
+
+.chat-msg-user {
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 12px 12px 2px 12px;
+  font-size: 13px;
+  max-width: 85%;
+  margin-left: auto;
+  width: fit-content;
+}
+
+.chat-msg-bot {
+  background: var(--bg-base);
+  color: #e5e7eb;
+  padding: 8px 12px;
+  border-radius: 2px 12px 12px 12px;
+  font-size: 13px;
+  max-width: 95%;
+  border: 1px solid var(--border-dark);
+  line-height: 1.5;
+}
+
+.chat-msg-bot table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.chat-msg-bot th {
+  text-align: left;
+  color: var(--text-sec);
+  font-weight: 500;
+  padding: 3px 6px;
+  border-bottom: 1px solid var(--border-dark);
+}
+.chat-msg-bot td { padding: 3px 6px; }
+.chat-msg-bot tr:hover td { background: rgba(255,255,255,0.03); }
+
+/* ── Status badge ─────────────────────────────────────────── */
+.badge-critical { color: var(--critical); background: rgba(228,0,43,0.12); }
+.badge-warning  { color: var(--warning);  background: rgba(245,158,11,0.12); }
+.badge-ok       { color: var(--ok);       background: rgba(16,185,129,0.12); }
+
+/* ── Marker pulse on highlight ────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 1; }
+  70%  { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.marker-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: pulse-ring 1.4s ease-out infinite;
+}
+
+/* ── Nav scroll effect ────────────────────────────────────── */
+.nav-scrolled { background: var(--bg-surface) !important; }
+
+/* ── How it works step line ───────────────────────────────── */
+.step-line { position: relative; }
+.step-line::before {
+  content: '';
+  position: absolute;
+  top: 20px; left: 20px;
+  width: 2px; height: calc(100% + 32px);
+  background: var(--border-dark);
+}
+.step-line:last-child::before { display: none; }

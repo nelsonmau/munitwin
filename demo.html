@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MuniTwin AI — Millbrook Demo</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base:    '#0d0f12',
+            surface: '#1a1d23',
+            accent:  '#2563eb',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { height: 100%; overflow: hidden; }
+    #map { height: 100%; width: 100%; }
+  </style>
+</head>
+<body class="bg-[#0d0f12] text-white antialiased flex flex-col h-screen">
+
+  <!-- NAV -->
+  <nav class="h-14 bg-[#1a1d23] border-b border-[#2a2d35] flex items-center px-4 gap-4 flex-shrink-0 z-50">
+    <a href="index.html" class="text-gray-400 hover:text-white transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+    </a>
+    <div class="h-5 w-px bg-[#2a2d35]"></div>
+    <span class="font-bold text-sm tracking-wide">MUNITWIN <span class="text-blue-500">AI</span></span>
+    <span class="text-gray-500 text-sm">·</span>
+    <span class="text-sm text-gray-300">Millbrook</span>
+    <span class="text-gray-500 text-sm">·</span>
+    <span class="text-xs text-gray-500">Demo</span>
+
+    <!-- Legend -->
+    <div class="ml-auto flex items-center gap-4 text-xs text-gray-400">
+      <span class="flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#e4002b] inline-block"></span>Critical
+      </span>
+      <span class="flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b] inline-block"></span>Warning
+      </span>
+      <span class="flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#10b981] inline-block"></span>OK
+      </span>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="flex flex-1 overflow-hidden">
+
+    <!-- MAP -->
+    <div id="map" class="flex-1"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="w-80 flex-shrink-0 bg-[#1a1d23] border-l border-[#2a2d35] flex flex-col overflow-hidden">
+      <div class="sidebar-scroll flex-1 overflow-y-auto">
+
+        <!-- Summary -->
+        <div class="p-4 border-b border-[#2a2d35]">
+          <div class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">Asset status</div>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-[#0d0f12] rounded p-2.5 text-center">
+              <div id="count-critical" class="text-xl font-bold text-[#e4002b]">—</div>
+              <div class="text-[10px] text-gray-500 uppercase tracking-wide mt-0.5">Critical</div>
+            </div>
+            <div class="bg-[#0d0f12] rounded p-2.5 text-center">
+              <div id="count-warning" class="text-xl font-bold text-[#f59e0b]">—</div>
+              <div class="text-[10px] text-gray-500 uppercase tracking-wide mt-0.5">Warning</div>
+            </div>
+            <div class="bg-[#0d0f12] rounded p-2.5 text-center">
+              <div id="count-ok" class="text-xl font-bold text-[#10b981]">—</div>
+              <div class="text-[10px] text-gray-500 uppercase tracking-wide mt-0.5">OK</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status filter -->
+        <div class="p-4 border-b border-[#2a2d35]">
+          <div class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">Filter by status</div>
+          <div class="flex gap-2">
+            <button data-status="all"
+              class="flex-1 text-xs py-1.5 rounded bg-[#0d0f12] border border-white/10 hover:border-white/30 transition-colors ring-2 ring-white/40">
+              All
+            </button>
+            <button data-status="critical"
+              class="flex-1 text-xs py-1.5 rounded bg-[#0d0f12] border border-[#e4002b]/30 text-[#e4002b] hover:border-[#e4002b] transition-colors">
+              Critical
+            </button>
+            <button data-status="warning"
+              class="flex-1 text-xs py-1.5 rounded bg-[#0d0f12] border border-[#f59e0b]/30 text-[#f59e0b] hover:border-[#f59e0b] transition-colors">
+              Warning
+            </button>
+            <button data-status="ok"
+              class="flex-1 text-xs py-1.5 rounded bg-[#0d0f12] border border-[#10b981]/30 text-[#10b981] hover:border-[#10b981] transition-colors">
+              OK
+            </button>
+          </div>
+        </div>
+
+        <!-- Layer toggles -->
+        <div class="p-4 border-b border-[#2a2d35]">
+          <div class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">Layers</div>
+          <div class="space-y-2.5">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" data-type="streetlight" checked
+                class="w-4 h-4 rounded border-gray-600 bg-[#0d0f12] accent-yellow-400" />
+              <span class="flex items-center gap-2 text-sm">
+                <span class="w-3 h-3 rounded-full border-2 border-yellow-400 bg-[#f59e0b]/50 inline-block"></span>
+                Streetlights
+              </span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" data-type="manhole" checked
+                class="w-4 h-4 rounded border-gray-600 bg-[#0d0f12] accent-slate-400" />
+              <span class="flex items-center gap-2 text-sm">
+                <span class="w-3 h-3 rounded-full border-2 border-slate-400 bg-slate-500/50 inline-block"></span>
+                Manholes
+              </span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" data-type="road" checked
+                class="w-4 h-4 rounded border-gray-600 bg-[#0d0f12] accent-blue-400" />
+              <span class="flex items-center gap-2 text-sm">
+                <span class="w-3 h-3 rounded border-2 border-blue-400 bg-blue-500/30 inline-block"></span>
+                Roads
+              </span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" data-type="tree" checked
+                class="w-4 h-4 rounded border-gray-600 bg-[#0d0f12] accent-green-400" />
+              <span class="flex items-center gap-2 text-sm">
+                <span class="w-3 h-3 rounded-full border-2 border-green-400 bg-green-500/50 inline-block"></span>
+                Trees
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Asset card (populated by JS on click) -->
+        <div id="asset-card" class="hidden border-b border-[#2a2d35]"></div>
+
+        <!-- Chatbot -->
+        <div class="p-4 flex flex-col gap-3">
+          <div class="text-xs font-semibold uppercase tracking-widest text-gray-500">Ask MuniTwin</div>
+
+          <!-- Suggested queries -->
+          <div id="chat-chips" class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style="scrollbar-width: none;"></div>
+
+          <!-- Messages -->
+          <div id="chat-messages" class="flex flex-col gap-2 min-h-[80px]">
+            <div class="chat-msg-bot">
+              Hello! Click an asset on the map to inspect it, or ask me something about Millbrook's infrastructure.
+            </div>
+          </div>
+
+          <!-- Input -->
+          <form id="chat-form" class="flex gap-2 mt-1">
+            <input id="chat-input" type="text" placeholder="Ask a question…"
+              class="flex-1 bg-[#0d0f12] border border-[#2a2d35] rounded px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors" />
+            <button type="submit"
+              class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-3 py-2 rounded transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </aside>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>
