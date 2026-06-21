@@ -1,5 +1,5 @@
-# Local server logs
-/tmp/
+# Concept docs (private)
+concept/
 
 # Playwright artifacts
 .playwright-mcp/
