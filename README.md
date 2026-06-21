@@ -4,8 +4,6 @@
 
 The project aims to bridge the digital gap between large cities and smaller local administrations, enabling data-driven governance, infrastructure monitoring, and citizen transparency.
 
-For product specification, user journey and MVP architecture → [PRODUCT.md](./PRODUCT.md)
-
 ---
 
 ## Use Cases
@@ -38,21 +36,46 @@ Additional vertical modules can be built on top of the infrastructure core:
 
 ---
 
-## Demo Concept
+## Demo — Millbrook
 
-### Scenario: the fictional town of Millbrook
-The MVP demo features a **fictional municipality** — Millbrook, ~3,000 inhabitants — with a handful of streets and public buildings. Every asset on the territory is mapped and queryable.
+The MVP demo features **Millbrook**, a fictional municipality of ~3,000 inhabitants.
 
-Navigation is designed in **2D** (lightweight and practical).
+- `index.html` — landing page (use cases, how data gets in, CTA)
+- `demo.html` — interactive 2D map with asset layers, filters, and simulated chatbot
 
-### Chatbot interface
-A simulated chatbot is embedded in the map. Users can type or click pre-built queries:
+**57 mapped assets** across four domains: streetlights, manholes, road segments, trees. Asset status (critical / warning / ok) is computed on-the-fly in the browser from raw field values — no stored status flag.
 
-- *"List streetlights approaching end of life"* → list with ID, street, year installed, priority
-- *"Which manholes haven't been inspected in over 12 months?"* → list + map highlight
+**Simulated chatbot** supports 5 pre-built operational queries: end-of-life streetlights, uninspected manholes, worst road sections, trees with risk alerts, estimated maintenance cost.
 
-### Data model
-Assets are stored as GeoJSON in `data/assets.json`. Status is computed on-the-fly in the browser from raw fields — no stored status flag. See [PRODUCT.md](./PRODUCT.md) for the full status logic.
+### Running locally
+
+Requires an HTTP server (fetch won't work from `file://`):
+
+```bash
+python3 -m http.server 8000
+# then open http://localhost:8000
+```
+
+Or deploy directly to GitHub Pages / Netlify — zero configuration needed.
+
+---
+
+## Design
+
+JPL-inspired design system. Light theme by default, dark mode via toggle (top-right nav). Preference persisted in `localStorage`. See [`DESIGN.md`](./DESIGN.md) for full token reference and component patterns.
+
+---
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Map | Leaflet.js + CartoDB tiles (light & dark) |
+| Styling | Tailwind CDN + CSS custom properties |
+| Data | GeoJSON (`data/assets.json`) |
+| Theme | CSS variables + `js/theme.js` |
+| Chatbot | Simulated — pattern matching on in-memory GeoJSON |
+| Hosting | Static — GitHub Pages / Netlify |
 
 ---
 

@@ -4,28 +4,65 @@ Inspired by NASA JPL (jpl.nasa.gov). Values extracted from the live site.
 
 ---
 
-## Colors
+## Themes
 
-| Token | Hex | Usage |
+The site ships with **light as default** and a **dark mode** toggle. Theme is persisted in `localStorage` and applied via `data-theme` on `<html>`. An inline script in `<head>` prevents flash of unstyled content.
+
+```
+data-theme="light"  (default)
+data-theme="dark"
+```
+
+Managed by `js/theme.js`. Map tile layer swaps automatically via MutationObserver in `js/app.js`.
+
+---
+
+## Color Tokens
+
+All colors are CSS custom properties on `:root` (light) and `[data-theme="dark"]`.
+
+| Token | Light | Dark | Usage |
+|---|---|---|---|
+| `--bg-base` | `#f4f5f7` | `#0d0f12` | page background |
+| `--bg-surface` | `#ffffff` | `#1a1d23` | cards, panels, sidebar |
+| `--bg-subtle` | `#edf0f3` | `#111318` | alternate section background |
+| `--bg-nav` | `rgba(255,255,255,0.95)` | `rgba(26,29,35,0.95)` | nav on scroll (backdrop) |
+| `--text-primary` | `#111827` | `#ffffff` | body text |
+| `--text-secondary` | `#6b7280` | `#9ca3af` | labels, meta, captions |
+| `--border-color` | `#e5e7eb` | `#2a2d35` | dividers, card borders |
+| `--accent` | `#2563eb` | `#2563eb` | CTA, links, brand (unchanged) |
+| `--accent-hover` | `#1d4ed8` | `#1d4ed8` | hover state |
+
+### Status colors (theme-invariant)
+
+| Status | Hex | Note |
 |---|---|---|
-| `bg-base` | `#0d0f12` | page background |
-| `bg-surface` | `#1a1d23` | cards, panels, sidebar |
-| `bg-subtle` | `#f4f5f7` | light sections |
-| `text-primary` | `#ffffff` | text on dark |
-| `text-secondary` | `#9ca3af` | labels, meta, captions |
-| `text-dark` | `#111827` | text on light |
-| `accent` | `#2563eb` | CTA, links, brand — civic blue replacing JPL red |
-| `accent-hover` | `#1d4ed8` | hover state |
-| `border-dark` | `#2a2d35` | dividers on dark surfaces |
-| `border-light` | `#e5e7eb` | dividers on light surfaces |
+| `critical` | `#e4002b` | exact JPL red |
+| `warning` | `#f59e0b` | amber-500 |
+| `ok` | `#10b981` | emerald-500 |
 
-### Status colors (JPL red recycled as critical)
+---
 
-| Status | Hex | Tailwind approx |
+## Semantic Utility Classes
+
+Use these in HTML instead of hardcoded Tailwind color utilities. They read from CSS variables and adapt automatically to both themes.
+
+| Class | CSS | Use |
 |---|---|---|
-| `critical` | `#e4002b` | — (custom, exact JPL red) |
-| `warning` | `#f59e0b` | `amber-500` |
-| `ok` | `#10b981` | `emerald-500` |
+| `.t-bg-base` | `background-color: var(--bg-base)` | page bg, inset blocks |
+| `.t-bg-surface` | `background-color: var(--bg-surface)` | cards, sidebar, nav |
+| `.t-bg-subtle` | `background-color: var(--bg-subtle)` | alternate sections |
+| `.t-text` | `color: var(--text-primary)` | primary text |
+| `.t-text-sec` | `color: var(--text-secondary)` | labels, meta |
+| `.t-border` | `border-color: var(--border-color)` | all dividers and borders |
+| `.t-divider` | `background-color: var(--border-color)` | `<hr>`-style spacers |
+| `.t-btn-ghost` | border + bg + text from vars | ghost button (adapts to theme) |
+| `.t-input` | border + bg + text from vars | text inputs |
+| `.chat-chip` | border + text from vars | chatbot query suggestion chips |
+| `.filter-active` | `box-shadow: 0 0 0 2px var(--accent)` | active filter button ring |
+| `.theme-toggle` | circular icon button | moon/sun toggle, top-right nav |
+
+> **Rule**: never use hardcoded Tailwind color utilities (`bg-[#...]`, `text-gray-*`, `border-[#...]`) on elements that appear in both themes. Use semantic classes above or Tailwind's theme-agnostic utilities (`bg-blue-600`, `text-red-600`, etc. for status/accent).
 
 ---
 
@@ -46,33 +83,42 @@ Font: **Inter** (Google Fonts — free substitute for JPL's Helvetica Now).
 ## Key Component Patterns
 
 **Hero**
-Full-viewport section. Dark background with subtle coordinate-grid overlay (CSS, no image required). White headline, secondary text in `text-secondary`, single primary CTA button.
+Full-viewport section. Background inherits `--bg-base` with a subtle coordinate-grid overlay (pure CSS, no image). Grid uses `rgba(37,99,235,0.08)` on light, `0.05` on dark. Headline in `--text-primary`, secondary text in `--text-secondary`, single primary CTA button.
 
-**Cards (dark)**
-`bg-surface` background, no visible border (use shadow or subtle inner border). Image or icon at top, title + body below. Status badge top-right when applicable.
+**Cards**
+`.t-bg-surface` background, `border t-border`. Hover: `hover:border-blue-400`. Icon block top-left with `bg-blue-500/10` tint (works on both themes).
 
 **Status badge**
 Small pill: `rounded-full px-2 py-0.5 text-xs font-medium uppercase tracking-wide`.
-Color from status palette above. Background at 15% opacity, text at full color.
+Use `.badge-critical` / `.badge-warning` / `.badge-ok` — color and bg defined in CSS.
 
 **Button — primary**
-`bg-accent text-white font-semibold px-6 py-3`. Minimal border-radius (`rounded`). No shadow. Hover: `bg-accent-hover`.
+`bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded`. Always white text on blue — no theme adjustment needed.
 
 **Button — ghost**
-Transparent, `border border-white/30 text-white`. Hover: `bg-white/10`.
+Use `.t-btn-ghost`. Reads `--bg-base`, `--border-color`, `--text-primary`. Hover shows `--accent` color. Do not use `border-white/30 text-white` (dark-only).
 
 **Nav**
-Dark (`bg-base`), sticky. Logo left, actions right. Becomes `bg-surface` on scroll (JS class toggle). Height: `56px`.
+Initially transparent (no background). On scroll: `.nav-scrolled` applies `--bg-nav` + `--border-color` bottom border + `backdrop-filter: blur(8px)`. Height: `56px`. Contains logo left, theme toggle + CTA right.
+
+**Theme toggle**
+`.theme-toggle` — circular 34px button. Contains two SVG icons: `.icon-moon` (visible in light mode) and `.icon-sun` (visible in dark mode). `js/theme.js` toggles `hidden` class on each on switch.
 
 **Map sidebar**
-`bg-surface`, fixed width `320px`, full height minus nav. Internal sections separated by `border-dark` dividers. Scrollable independently from map.
+`.t-bg-surface`, fixed width `320px`, full height minus nav. Internal sections separated by `border-b t-border`. Independently scrollable via `.sidebar-scroll`.
+
+**Chatbot chips**
+`.chat-chip` — pill buttons generated by JS. Uses `--border-color` and `--text-secondary`, adapts to theme. Do not apply Tailwind dark-specific utilities from JS-generated HTML.
 
 ---
 
-## Tile Layer
+## Tile Layers
 
-CartoDB Dark Matter (free, no API key):
-```
-https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png
-```
-Attribution: © OpenStreetMap contributors © CARTO
+Swapped automatically on theme change via MutationObserver in `js/app.js`.
+
+| Theme | URL |
+|---|---|
+| Dark | `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png` |
+| Light | `https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png` |
+
+Attribution: © OpenStreetMap contributors © CARTO. Free, no API key required.
