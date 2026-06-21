@@ -40,7 +40,7 @@ function _setupUI() {
   QUERIES.forEach(q => {
     const btn = document.createElement('button');
     btn.textContent = q.label;
-    btn.className = 'whitespace-nowrap text-xs px-3 py-1.5 rounded-full border border-white/20 text-gray-300 hover:border-blue-500 hover:text-white transition-colors';
+    btn.className = 'chat-chip';
     btn.addEventListener('click', () => _handleInput(q.label));
     chips.appendChild(btn);
   });
