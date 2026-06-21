@@ -4,33 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MuniTwin AI — Digital Twin for Small Municipalities</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('munitwin-theme') || 'light';</script>
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            base:    '#0d0f12',
-            surface: '#1a1d23',
-            accent:  '#2563eb',
-          },
-          fontFamily: { sans: ['Inter', 'sans-serif'] }
-        }
-      }
+      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
     }
   </script>
 </head>
-<body class="bg-[#0d0f12] text-white antialiased">
+<body class="t-bg-base t-text antialiased">
 
   <!-- NAV -->
-  <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent">
-    <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+  <nav id="nav" class="fixed top-0 left-0 right-0 z-50 border-b border-transparent transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between gap-4">
       <span class="font-bold text-sm tracking-wide">MUNITWIN <span class="text-blue-500">AI</span></span>
-      <a href="demo.html"
-         class="text-sm font-semibold bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-4 py-2 rounded transition-colors">
-        Launch Demo →
-      </a>
+      <div class="flex items-center gap-3">
+        <button class="theme-toggle" title="Toggle light / dark">
+          <svg class="icon-moon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+          <svg class="icon-sun w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+          </svg>
+        </button>
+        <a href="demo.html"
+           class="text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors">
+          Launch Demo →
+        </a>
+      </div>
     </div>
   </nav>
 
@@ -38,26 +42,26 @@
   <section class="hero-grid min-h-screen flex items-center pt-14">
     <div class="max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-6">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-500 mb-6">
           AI-powered Digital Twin Platform
         </p>
         <h1 class="text-5xl lg:text-6xl font-extrabold leading-[1.05] mb-6">
           Every street.<br/>Every lamp.<br/>Every tree.
         </h1>
-        <p class="text-lg text-gray-400 leading-relaxed mb-10 max-w-lg">
+        <p class="text-lg t-text-sec leading-relaxed mb-10 max-w-lg">
           MuniTwin gives small municipalities the same data-driven infrastructure management
           that large cities take for granted — without the large-city budget.
         </p>
         <div class="flex flex-wrap gap-4">
           <a href="demo.html"
-             class="inline-flex items-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold px-7 py-3.5 rounded transition-colors text-sm">
+             class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded transition-colors text-sm">
             Explore Millbrook Demo
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
           </a>
           <a href="#how-it-works"
-             class="inline-flex items-center gap-2 border border-white/20 hover:bg-white/5 text-white font-semibold px-7 py-3.5 rounded transition-colors text-sm">
+             class="inline-flex items-center gap-2 border t-border t-text font-semibold px-7 py-3.5 rounded transition-colors text-sm hover:border-blue-500 hover:text-blue-500">
             How it works
           </a>
         </div>
@@ -65,129 +69,126 @@
 
       <!-- Hero stats -->
       <div class="grid grid-cols-2 gap-4">
-        <div class="bg-[#1a1d23] border border-[#2a2d35] rounded-lg p-6">
-          <div class="text-3xl font-bold text-[#e4002b] mb-1">57</div>
-          <div class="text-sm text-gray-400">assets mapped in Millbrook demo</div>
+        <div class="t-bg-surface border t-border rounded-lg p-6">
+          <div class="text-3xl font-bold text-red-600 mb-1">57</div>
+          <div class="text-sm t-text-sec">assets mapped in Millbrook demo</div>
         </div>
-        <div class="bg-[#1a1d23] border border-[#2a2d35] rounded-lg p-6">
-          <div class="text-3xl font-bold text-[#f59e0b] mb-1">4</div>
-          <div class="text-sm text-gray-400">infrastructure domains tracked</div>
+        <div class="t-bg-surface border t-border rounded-lg p-6">
+          <div class="text-3xl font-bold text-amber-500 mb-1">4</div>
+          <div class="text-sm t-text-sec">infrastructure domains tracked</div>
         </div>
-        <div class="bg-[#1a1d23] border border-[#2a2d35] rounded-lg p-6">
-          <div class="text-3xl font-bold text-[#10b981] mb-1">&lt; 15k</div>
-          <div class="text-sm text-gray-400">target municipality size (inhabitants)</div>
+        <div class="t-bg-surface border t-border rounded-lg p-6">
+          <div class="text-3xl font-bold text-emerald-500 mb-1">&lt; 15k</div>
+          <div class="text-sm t-text-sec">target municipality size (inhabitants)</div>
         </div>
-        <div class="bg-[#1a1d23] border border-[#2a2d35] rounded-lg p-6">
-          <div class="text-3xl font-bold text-blue-400 mb-1">0</div>
-          <div class="text-sm text-gray-400">server infrastructure required</div>
+        <div class="t-bg-surface border t-border rounded-lg p-6">
+          <div class="text-3xl font-bold text-blue-500 mb-1">0</div>
+          <div class="text-sm t-text-sec">server infrastructure required</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- USE CASES -->
-  <section class="py-24 border-t border-[#2a2d35]">
+  <section class="py-24 border-t t-border">
     <div class="max-w-7xl mx-auto px-6">
-      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-4">What MuniTwin does</p>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-500 mb-4">What MuniTwin does</p>
       <h2 class="text-3xl lg:text-4xl font-bold mb-16 max-w-2xl">
         Built around how municipalities actually work
       </h2>
-
       <div class="grid lg:grid-cols-3 gap-6">
-        <!-- Card 1 -->
-        <div class="bg-[#1a1d23] border border-[#2a2d35] rounded-lg p-8 group hover:border-blue-500/40 transition-colors">
+
+        <div class="t-bg-surface border t-border rounded-lg p-8 hover:border-blue-400 transition-colors">
           <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6">
-            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
             </svg>
           </div>
           <h3 class="font-bold text-lg mb-3">Infrastructure &amp; Networks</h3>
-          <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          <p class="t-text-sec text-sm leading-relaxed mb-4">
             Streetlights, roads, manholes, underground networks, green spaces —
             every asset mapped, monitored, and queryable. Know what needs fixing before it breaks.
           </p>
-          <div class="text-xs text-blue-400 font-medium uppercase tracking-wide">Core module</div>
+          <div class="text-xs text-blue-500 font-medium uppercase tracking-wide">Core module</div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="bg-[#1a1d23] border border-[#2a2d35] rounded-lg p-8 group hover:border-blue-500/40 transition-colors">
+        <div class="t-bg-surface border t-border rounded-lg p-8 hover:border-blue-400 transition-colors">
           <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center mb-6">
-            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
           </div>
           <h3 class="font-bold text-lg mb-3">Emergency Preparedness</h3>
-          <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          <p class="t-text-sec text-sm leading-relaxed mb-4">
             Hydrogeological risk monitoring, hydrometric sensors, real-time alerts.
             When an event hits, your team has a shared operational picture — not a spreadsheet.
           </p>
-          <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">Extended module</div>
+          <div class="text-xs t-text-sec font-medium uppercase tracking-wide">Extended module</div>
         </div>
 
-        <!-- Card 3 -->
-        <div class="bg-[#1a1d23] border border-[#2a2d35] rounded-lg p-8 group hover:border-blue-500/40 transition-colors">
+        <div class="t-bg-surface border t-border rounded-lg p-8 hover:border-blue-400 transition-colors">
           <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-6">
-            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
             </svg>
           </div>
           <h3 class="font-bold text-lg mb-3">Citizen Dialogue</h3>
-          <p class="text-gray-400 text-sm leading-relaxed mb-4">
+          <p class="t-text-sec text-sm leading-relaxed mb-4">
             Transparent, two-way communication between the administration and its community.
             Issue reporting, consultations, real-time updates on works in progress.
           </p>
-          <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">Extended module</div>
+          <div class="text-xs t-text-sec font-medium uppercase tracking-wide">Extended module</div>
         </div>
+
       </div>
     </div>
   </section>
 
   <!-- HOW IT WORKS -->
-  <section id="how-it-works" class="py-24 border-t border-[#2a2d35] bg-[#111318]">
+  <section id="how-it-works" class="py-24 border-t t-border t-bg-subtle">
     <div class="max-w-7xl mx-auto px-6">
-      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-4">How data gets in</p>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-500 mb-4">How data gets in</p>
       <h2 class="text-3xl lg:text-4xl font-bold mb-16 max-w-2xl">
         From raw territory to queryable twin
       </h2>
-
       <div class="grid lg:grid-cols-4 gap-8">
         <div class="step-line pl-12 relative">
-          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-sm">1</div>
+          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 font-bold text-sm">1</div>
           <h4 class="font-semibold mb-2">Upload existing records</h4>
-          <p class="text-sm text-gray-400 leading-relaxed">Floor plans, CAD files, maintenance logs, cadastral data — whatever the municipality already has.</p>
+          <p class="text-sm t-text-sec leading-relaxed">Floor plans, CAD files, maintenance logs, cadastral data — whatever the municipality already has.</p>
         </div>
         <div class="step-line pl-12 relative">
-          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-sm">2</div>
+          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 font-bold text-sm">2</div>
           <h4 class="font-semibold mb-2">Aerial drone survey</h4>
-          <p class="text-sm text-gray-400 leading-relaxed">A single drone flight captures the territory from above. No specialist contractor needed — a consumer drone is enough.</p>
+          <p class="text-sm t-text-sec leading-relaxed">A single drone flight captures the territory from above. No specialist contractor needed — a consumer drone is enough.</p>
         </div>
         <div class="step-line pl-12 relative">
-          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-sm">3</div>
+          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 font-bold text-sm">3</div>
           <h4 class="font-semibold mb-2">Street-level coverage</h4>
-          <p class="text-sm text-gray-400 leading-relaxed">A car or bike with a camera covers the road network. Assets are identified and geolocated automatically.</p>
+          <p class="text-sm t-text-sec leading-relaxed">A car or bike with a camera covers the road network. Assets are identified and geolocated automatically.</p>
         </div>
         <div class="pl-12 relative">
-          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-sm">4</div>
+          <div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 font-bold text-sm">4</div>
           <h4 class="font-semibold mb-2">Query &amp; act</h4>
-          <p class="text-sm text-gray-400 leading-relaxed">The AI structures everything into an interactive map. Ask questions in plain language. Get answers with GPS coordinates and priorities.</p>
+          <p class="text-sm t-text-sec leading-relaxed">The AI structures everything into an interactive map. Ask questions in plain language. Get answers with GPS coordinates and priorities.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="py-24 border-t border-[#2a2d35]">
+  <section class="py-24 border-t t-border">
     <div class="max-w-7xl mx-auto px-6 text-center">
       <h2 class="text-3xl lg:text-4xl font-bold mb-6">See it live in Millbrook</h2>
-      <p class="text-gray-400 mb-10 max-w-xl mx-auto">
+      <p class="t-text-sec mb-10 max-w-xl mx-auto">
         Explore the interactive demo of a fictional municipality — 57 mapped assets,
         real status logic, and a chatbot that answers operational questions.
       </p>
       <a href="demo.html"
-         class="inline-flex items-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold px-8 py-4 rounded transition-colors">
+         class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded transition-colors">
         Launch Demo
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -197,8 +198,8 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="border-t border-[#2a2d35] py-8">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+  <footer class="border-t t-border py-8">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs t-text-sec">
       <span>MUNITWIN AI — MVP Demo · Millbrook is a fictional municipality</span>
       <span>Built with Leaflet · OpenStreetMap · CARTO</span>
     </div>
@@ -207,10 +208,10 @@
   <script>
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) nav.classList.add('nav-scrolled', 'border-[#2a2d35]');
-      else nav.classList.remove('nav-scrolled', 'border-[#2a2d35]');
+      nav.classList.toggle('nav-scrolled', window.scrollY > 20);
     });
   </script>
+  <script src="js/theme.js"></script>
 
 </body>
 </html>
